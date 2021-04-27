@@ -3,19 +3,37 @@
   tasks:
     - name: create a directory
       file:
-        path: '/etc/foo/bar/baz'
+        path: "/etc/foo/bar/baz"
         state: directory
     - name: run a command
       command: date
       changed_when: no
+    - name: run a command as root
+      command: date
+      become: yes
+      changed_when: no
     - name: read a file
+      slurp:
+        path: /etc/machine-id
+    - name: read a file as root
+      become: yes
       slurp:
         path: /etc/machine-id
     - name: transfer a file
       copy:
         src: hello
         dest: /tmp/hello
+    - name: transfer a file as root
+      become: yes
+      copy:
+        src: hello
+        dest: /tmp/hello
     - name: remove a file
+      file:
+        dest: /tmp/hello
+        state: absent
+    - name: remove a file as root
+      become: yes
       file:
         dest: /tmp/hello
         state: absent
